@@ -7,6 +7,8 @@
 
 	<style type="text/css">
         #uuz {
+        	margin: 0 auto;
+        	align-self: center;
             width: 600px;
             height: 200px;
             border: 1px dashed orange;
@@ -14,6 +16,8 @@
         }
 
 	#div1 {
+		align: center;
+		margin: 0 auto;
 		width: 50px;
 		height: 50px;
 		border: 2px solid black;
@@ -47,7 +51,7 @@
 
     	</style>
 
-	<body>
+	<body align="center">
 		<h1>文件系统__V1.0</h1><br>
 		<hr>
 		
@@ -60,7 +64,7 @@
     			<input type="submit" value="Upload">
    		</form>
 		
-		<div id="uuz"><h2>将文件拖拽到此处上传</h2></div>
+		<div id="uuz" align="center"><h2>将文件拖拽到此处上传</h2></div>
 		<hr>
 		
 		<h2>文件列表</h2>
@@ -80,7 +84,7 @@
 			//document.write("<p>",my_message2,"</p>");
 			var my_message3 = {{ filenames|tojson }};
 			var my_href;
-			document.write("<table cellpadding=\"12\" style=\"table-layout:fixed;\">");
+			document.write("<table align=\"center\" cellpadding=\"12\" style=\"table-layout:fixed;\">");
 			var cnt=0;
 			document.write("<tr>")
 			for(file in my_message3)
@@ -90,10 +94,9 @@
 					cnt = 0;
 					document.write("</tr><tr>");
 				}
-				else
-				{cnt=cnt+1;}
 				my_href = "/uploadFiles/" + my_message3[file];
 				document.write("<td valign=\"top\" class=\"breaklong\"><img src=\"../static/file2.png\"><br><p class=\"breaktext\">",my_message3[file],"</p></a></td>");
+				cnt=cnt+1;
 			}
 			document.write("</tr>");
 			document.write("</table>");

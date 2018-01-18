@@ -22,7 +22,7 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     filenames = get_allfilename()
-    the_message = u'您可以上传或下载文件'
+    the_message = u'您可以上传文件'
     return render_template('uploadIndex.html',filenames=filenames, the_message=the_message, my_message1="1234")
 
 @app.route('/uploadFiles', methods=['POST'])
@@ -36,16 +36,17 @@ def upload():
             savepath=(os.path.join(app.config['UPLOAD_FOLDER'],filename.encode("utf-8")))
             print savepath
             file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename.encode("utf-8")))
-    filenames = get_allfilename()
+    #filenames = get_allfilename()
     the_message = u'上传成功！'
     print "do this"
-    return render_template('uploadIndex.html', filenames=filenames, the_message=the_message)
+    filenames = get_allfilename()
+    return render_template('uploadIndex.html', filenames=filenames, the_message=the_message, my_message1="1234")
 
 @app.route('/uploadFiles')
 def page_get():
     filenames = get_allfilename()
     the_message = u'上传成功！'
-    return render_template('uploadIndex.html', filenames=filenames, the_message=the_message)
+    return render_template('uploadIndex.html', filenames=filenames, the_message=the_message, my_message1="1234")
   
 @app.route('/uploadFiles/<filename>')
 def uploaded_file(filename):
