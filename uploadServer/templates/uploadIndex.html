@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>文件系统</title>
+	</head>
+
+	<style type="text/css">
+        #uuz {
+            width: 600px;
+            height: 200px;
+            border: 1px dashed orange;
+            text-align: center;
+        }
+
+	#div1 {
+		width: 50px;
+		height: 50px;
+		border: 2px solid black;
+		text-align: center;
+	}
+	td {
+		word-wrap: break-word;
+		word-break: break-all;
+	}
+
+	ul.circle {list-style-type:circle}
+	ul.square {list-style-type:square}
+	ul.image {list-style-image:url('../static/file.png')}
+	.breaklong {
+		width: 50px;
+		height: 60px; 
+		text-align: center;  
+		word-wrap: break-word;
+		word-break: break-all;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.breaktext {
+		width: 50px;
+		height: 30px;
+		text-align: center;
+		word-wrap: break-word;
+		word-break: break-all;
+		text-overflow: ellipsis;
+	}
+
+    	</style>
+
+	<body>
+		<h1>文件系统__V1.0</h1><br>
+		<hr>
+		
+	<!--	<img src="../static/file.png">  -->
+		<h2>{{ the_message }}</h2>
+		<hr>
+
+		<form action="uploadFiles" method="post" enctype="multipart/form-data">
+   			<input type="file" multiple="" name="file[]" />
+    			<input type="submit" value="Upload">
+   		</form>
+		
+		<div id="uuz"><h2>将文件拖拽到此处上传</h2></div>
+		<hr>
+		
+		<h2>文件列表</h2>
+<!--
+		<div>
+		<ul class="image">
+    			{% for file in filenames %}
+				<a href="{{url_for('uploaded_file', filename=file)}}"><img src="../static/file2.png">{{file}}</a>
+    			{% endfor %}
+   		</ul>
+
+   		</div>
+-->
+		<!-- <div id="FlaskToJs">{{my_message}}</div>  -->
+		<script>
+			var my_message2 = {{ my_message1 }};
+			//document.write("<p>",my_message2,"</p>");
+			var my_message3 = {{ filenames|tojson }};
+			var my_href;
+			document.write("<table cellpadding=\"12\" style=\"table-layout:fixed;\">");
+			var cnt=0;
+			document.write("<tr>")
+			for(file in my_message3)
+			{
+				if(cnt > 6)
+				{
+					cnt = 0;
+					document.write("</tr><tr>");
+				}
+				else
+				{cnt=cnt+1;}
+				my_href = "/uploadFiles/" + my_message3[file];
+				document.write("<td valign=\"top\" class=\"breaklong\"><img src=\"../static/file2.png\"><br><p class=\"breaktext\">",my_message3[file],"</p></a></td>");
+			}
+			document.write("</tr>");
+			document.write("</table>");
+		</script>
+
+
+	</body>
+	
+	<script>  
+        window.onload = function(){
+		var uuz = document.getElementById('uuz');
+		var mytext = "myfiles:";            
+      
+		uuz.ondragenter = function(e){  
+			e.preventDefault();
+			this.innerHTML = '松开鼠标完成上传'  
+		}  
+      
+		uuz.ondragover = function(e){  
+			e.preventDefault();  
+                	this.innerHTML = '松开鼠标完成上传';  
+            	}  
+      
+            	uuz.ondragleave = function(e){  
+                	e.preventDefault();  
+                	this.innerHTML = '';  
+            	}  
+      	
+        	uuz.ondrop = function(e){
+            		e.stopPropagation();
+            		e.preventDefault();
+            		var filelist = e.dataTransfer.files;
+            		var i = 0;
+            		for(x in filelist)
+            		{
+            			i++;
+            		}
+            		for(var j=0;j<i-2;j++)
+            		{
+            			var upfile = e.dataTransfer.files[j]; //获取要上传的文件对象(可以上传多个)
+            			var formdata = new FormData();  
+            			var xhr = new XMLHttpRequest();  
+      	
+      	      			formdata.append('file[]', upfile); //设置服务器端接收的name为file  
+            			xhr.open('post','/uploadFiles'); //以post方式发送到1.php  
+            			xhr.send(formdata);
+			}
+			xmlHttp = createXMLHttpRequest();  
+			var url = "/uploadFiles";  
+			xmlHttp.open("GET", url, true);// 异步处理返回   
+			xmlHttp.onreadystatechange = callback;   
+			xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");  
+			xmlHttp.send();
+			alert()	
+            	}  
+        }  
+    </script>
+
+</html>

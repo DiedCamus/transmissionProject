@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>文件系统</title>
+	</head>
+
+	<style type="text/css">
+
+	#div1 {
+		width: 50px;
+		height: 50px;
+		border: 2px solid black;
+		text-align: center;
+	}
+	td {
+		word-wrap: break-word;
+		word-break: break-all;
+	}
+
+	ul.circle {list-style-type:circle}
+	ul.square {list-style-type:square}
+	ul.image {list-style-image:url('../static/file.png')}
+	.breaklong {
+		width: 50px;
+		height: 60px; 
+		text-align: center;  
+		word-wrap: break-word;
+		word-break: break-all;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.breaktext {
+		width: 50px;
+		height: 30px;
+		text-align: center;
+		word-wrap: break-word;
+		word-break: break-all;
+		text-overflow: ellipsis;
+	}
+
+    	</style>
+
+	<body>
+		<h1>文件系统__V1.0</h1><br>
+		<hr>
+		
+	<!--	<img src="../static/file.png">  -->
+		<h2>{{ the_message }}</h2>
+		<hr>
+		
+		<h2>文件列表</h2>
+<!--
+		<div>
+		<ul class="image">
+    			{% for file in filenames %}
+				<a href="{{url_for('uploaded_file', filename=file)}}"><img src="../static/file2.png">{{file}}</a>
+    			{% endfor %}
+   		</ul>
+
+   		</div>
+-->
+		<!-- <div id="FlaskToJs">{{my_message}}</div>  -->
+		<script>
+			var my_message2 = {{ my_message1 }};
+			//document.write("<p>",my_message2,"</p>");
+			var my_message3 = {{ filenames|tojson }};
+			var my_href;
+			document.write("<table cellpadding=\"12\" style=\"table-layout:fixed;\">");
+			var cnt=0;
+			document.write("<tr>")
+			for(file in my_message3)
+			{
+				if(cnt > 6)
+				{
+					cnt = 0;
+					document.write("</tr><tr>");
+				}
+				else
+				{cnt=cnt+1;}
+				my_href = "/uploadFiles/" + my_message3[file];
+				document.write("<td valign=\"top\" class=\"breaklong\"><a href=\"", my_href, "\"><img src=\"../static/file2.png\"><br><p class=\"breaktext\">",my_message3[file],"</p></a></td>");
+			}
+			document.write("</tr>");
+			document.write("</table>");
+		</script>
+
+	</body>
+
+</html>
