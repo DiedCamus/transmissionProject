@@ -61,7 +61,9 @@ def uploaded_file(filename):
 @app.route('/downloadlog.log')
 def show_logs():
     #return render_template('log.html')
-    return "show log"
+    #return "show log"
+    directory = os.getcwd()
+    return send_from_directory(directory, "downloadlog.log", as_attachment=True)
     #return send_from_directory(app.config['LOGS_FOLDER'],filename)
 
 def get_allfilename():
