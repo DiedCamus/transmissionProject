@@ -1,0 +1,60 @@
+    <!DOCTYPE html>  
+    <html lang="en">  
+    <head>  
+        <meta charset="UTF-8">  
+        <title>h5拖拽异步上传</title>  
+    </head>  
+    <style>  
+        #uuz{  
+            width: 200px;  
+            height: 200px;  
+            border: 1px dashed orange;  
+            text-align: center;  
+        }  
+    </style>  
+    <body>  
+        <div id="uuz">  
+              
+        </div>  
+    </body>  
+    <script>  
+        window.onload = function(){  
+            var uuz = document.getElementById('uuz');  
+      
+            uuz.ondragenter = function(e){  
+                e.preventDefault();  
+            }  
+      
+            uuz.ondragover = function(e){  
+                e.preventDefault();  
+                this.innerHTML = '请松开';  
+            }  
+      
+            uuz.ondragleave = function(e){  
+                e.preventDefault();  
+                this.innerHTML = '请拖入要上传的文件';  
+            }  
+      
+            uuz.ondrop = function(e){  
+                e.preventDefault();  
+      
+                var upfile = e.dataTransfer.files[0]; //获取要上传的文件对象(可以上传多个)  
+                var formdata = new FormData();  
+                var xhr = new XMLHttpRequest();  
+      
+                formdata.append('file', upfile); //设置服务器端接收的name为upfile  
+                xhr.open('post','/uploadFiles'); //以post方式发送到1.php  
+      
+                xhr.onreadystatechange = function(){  
+                    if(this.status==200){ //上传成功  
+                        alert('上传成功');  
+                    }else{  
+                        alert('上传失败~');  
+                    }  
+                }  
+      
+                xhr.send(formdata);  
+            }  
+        }  
+    </script>  
+    </html>  

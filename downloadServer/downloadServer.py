@@ -2,15 +2,18 @@
 #-*-coding:utf-8 -*-
 import os
 import sys
+import time
 reload(sys)
 sys.setdefaultencoding("utf-8")
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
 UPLOAD_FOLDER = "uploadFiles"
+ISOTIMEFORMAT="%Y-%m-%d %X" #set the time format
 
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'uploadFiles/'
+app.config['LOGS_FOLDER'] = '/'
 
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
@@ -48,8 +51,18 @@ def page_get():
   
 @app.route('/uploadFiles/<filename>')
 def uploaded_file(filename):
-  return send_from_directory(app.config['UPLOAD_FOLDER'],
-                filename)
+    ip = request.remote_addr
+    fp = open("downloadlog.log","a")
+    logtext = time.strftime( ISOTIMEFORMAT, time.localtime( time.time() ))  +  "  download to  " + ip + "  \"" + filename +"\"\n";
+    fp.write(logtext)
+    fp.close()
+    return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
+
+@app.route('/downloadlog.log')
+def show_logs():
+    #return render_template('log.html')
+    return "show log"
+    #return send_from_directory(app.config['LOGS_FOLDER'],filename)
 
 def get_allfilename():
     filenames = []
