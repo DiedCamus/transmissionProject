@@ -23,6 +23,7 @@ function send_withflute1(){
 			#($flutepath -S -m:192.168.1.10 -p:4000 -t:2 -i:192.168.1.13 -r:5000000 -n:1 -F:$entry)&&(mv $entry $entry.sent) &	
 			#$flutepath -S -m:${sip1} -p:4000 -t:2 -i:${rip1} -r:5000000 -n:1 -F:${entry} &&(mv $entry $entry.sent) &
 			(${flute1}${entry})&&(mv $entry $entry.sent) &
+			fi
 		fi
 		done
 	fi
@@ -42,6 +43,7 @@ function send_withflute2(){
 			#($flutepath -S -m:192.168.1.10 -p:4000 -t:2 -i:192.168.1.13 -r:5000000 -n:1 -F:$entry)&&(mv $entry $entry.sent) &	
 			#$flutepath -S -m:${sip1} -p:4000 -t:2 -i:${rip1} -r:5000000 -n:1 -F:${entry} &&(mv $entry $entry.sent) &
 			(${flute2}${entry})&&(mv $entry $entry.sent) &
+			fi
 		fi
 		done
 	fi
@@ -78,7 +80,7 @@ function send_withbothflute(){
 
 while [ 1 ]
 do
-	case tube_number in
+	case $tube_number in
 		1)
 		echo "use flute1"
 		send_withflute1
