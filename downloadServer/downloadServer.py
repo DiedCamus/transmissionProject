@@ -10,6 +10,16 @@ from werkzeug import secure_filename
 UPLOAD_FOLDER = "uploadFiles"
 ISOTIMEFORMAT="%Y-%m-%d %X" #set the time format
 
+currentpath=os.getcwd()
+uploadpath=os.path.join(currentpath,UPLOAD_FOLDER)
+if os.path.isdir(uploadpath):
+	print "upload dir exisits"
+else:
+	print "upload dir not exisits, make it"
+	os.makedirs(uploadpath)
+
+
+
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'uploadFiles/'
