@@ -5,7 +5,7 @@ import sys
 import time
 reload(sys)
 sys.setdefaultencoding("utf-8")
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, session, flash
 from werkzeug import secure_filename
 UPLOAD_FOLDER = "uploadFiles"
 ISOTIMEFORMAT="%Y-%m-%d %X" #set the time format
@@ -24,6 +24,11 @@ app.config['UPLOAD_FOLDER'] = 'uploadFiles/'
 
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
+#log in and log out system
+app.config['USERNAME']="admin"
+app.config['PASSWORD']="admin"
+app.config['SECRET_KEY']="xeew\xe4\xc0\xee\xb1]\x9b\xa0\x9e)\x15Qhem\xe5\xf17\xd6\xceB\xb7\xb4"
+
 
 def allowed_file(filename):
   return '.' in filename and \
@@ -31,12 +36,16 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     filenames = get_allfilename()
     the_message = u'您可以上传文件'
-    return render_template('uploadIndex.html',filenames=filenames, the_message=the_message, my_message1="1234")
+    return render_template('uploadIndex.html',filenames=filenames, the_message=the_message, USERNAME=app.config['USERNAME'])
 
 @app.route('/uploadFiles', methods=['POST'])
 def upload():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     uploaded_files = request.files.getlist("file[]")
     ip = request.remote_addr
     fp = open("uploadlog.log","a")
@@ -55,21 +64,27 @@ def upload():
     the_message = u'上传成功！'
     print "do this"
     filenames = get_allfilename()
-    return render_template('uploadIndex.html', filenames=filenames, the_message=the_message, my_message1="1234")
+    return render_template('uploadIndex.html', filenames=filenames, the_message=the_message, USERNAME=app.config['USERNAME'])
 
 @app.route('/uploadFiles')
 def page_get():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     filenames = get_allfilename()
     the_message = u'上传成功！'
-    return render_template('uploadIndex.html', filenames=filenames, the_message=the_message, my_message1="1234")
+    return render_template('uploadIndex.html', filenames=filenames, the_message=the_message, USERNAME=app.config['USERNAME'])
   
 @app.route('/uploadFiles/<filename>')
 def uploaded_file(filename):
-  return send_from_directory(app.config['UPLOAD_FOLDER'],
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
                 filename)
 
 @app.route('/uploadlog.log')
 def show_logs():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     #return render_template('log.html')
     directory = os.getcwd()
     return send_from_directory(directory, "uploadlog.log", as_attachment=True)
@@ -90,6 +105,27 @@ def get_allfilename():
             filenames.append(file)
     print filenames
     return filenames
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+        error = None
+        if request.method == 'POST':
+                if request.form['username'] != app.config['USERNAME']:
+                        error = 'Invalid username'
+                elif request.form['password'] != app.config['PASSWORD']:
+                        error = 'Invalid password'
+                else:
+                        session['logged_in'] = True
+                        flash('You were logged in')
+                        return redirect(url_for('index'))
+        return render_template('login.html', error=error)
+
+@app.route('/logout')
+def logout():
+        session.pop('logged_in', None)
+        flash('You were logged out')
+        return redirect(url_for('index'))
+
 
 
 if __name__ == '__main__':

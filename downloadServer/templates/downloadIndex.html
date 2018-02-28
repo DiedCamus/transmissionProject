@@ -44,7 +44,7 @@
 	<body align="center">
 		<h1>文件系统__V1.0</h1><br>
 		<hr>
-		
+		已登录:{{ USERNAME }}<a href="/logout">注销</a>
 	<!--	<img src="../static/file.png">  -->
 		<h2>{{ the_message }}</h2><br>
 		<a href="/downloadlog.log">查看下载记录</a>
@@ -63,7 +63,6 @@
 -->
 		<!-- <div id="FlaskToJs">{{my_message}}</div>  -->
 		<script>
-			var my_message2 = {{ my_message1 }};
 			//document.write("<p>",my_message2,"</p>");
 			var my_message3 = {{ filenames|tojson }};
 			var my_href;
