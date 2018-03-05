@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>管理账户</title>
+	</head>
+	<body>
+		<div align="center">
+		<table>
+			<tr>
+				<th>用户名</th> <th>密码</th> <th>操作</th>
+			</tr>
+			{% for entry in allusers %}
+			<tr>
+				<td>{{ entry[1] }}</td>
+				<td>{{ entry[2] }}</td>
+				<td>
+					<form action="/edit_users" method="post">
+						<input type="hidden" name="username" value="{{ entry[1] }}" />
+						<input type="submit" value="删除" />
+					</form>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+		<a href="/">返回</a>
+		</div>
+		
+	</body>
+</html>

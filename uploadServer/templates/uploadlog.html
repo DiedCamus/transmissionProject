@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>上传记录</title>
+		<style type="text/css">
+			div{
+				align: center;
+				width: 1000px;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<h1 style="text-align:center">上传记录</h1>
+			<a href="/uploadlog.log" style="text-align:center">导出上传记录</a>
+		
+			{% for entry in logs %}
+				<p>{{ entry }}</p>
+			{% endfor %}
+			<a href="/" >返回</a>
+		</div>
+	</body>
+<html>

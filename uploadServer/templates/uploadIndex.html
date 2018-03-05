@@ -55,11 +55,15 @@
 		<h1>文件系统__V1.0</h1><br>
 		<hr>
 		
-		已登录:{{ USERNAME }}  <a href="/logout">注销</a>
+		已登录:{{ USERNAME }}  <a href="/logout">注销</a><br>
+		{% if USERNAME=="admin" %}
+		<a href="/register">注册新用户</a><br>
+		<a href="/edit_users">删除已有账号</a><br>
+		{% endif %}
 		
 	<!--	<img src="../static/file.png">  -->
 		<h2>{{ the_message }}</h2><br>
-		<a href="/uploadlog.log">查看上传记录</a>
+		<a href="/uploadlog">查看上传记录</a>
 		<hr>
 
 		<form action="uploadFiles" method="post" enctype="multipart/form-data">
