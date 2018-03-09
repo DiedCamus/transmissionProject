@@ -274,10 +274,22 @@ def edit_users():
 @app.route('/resend',methods=['POST', 'GET'])
 def file_resend():
 	if request.method == 'POST':
+		filepath = os.path.join(os.getcwd(), 'uploadFiles')
+		print filepath
 		filename = request.form['filename']
-		return render_template('change_password.html', filename=filename)
+		oldfile=os.path.join(filepath, filename)
+		print filename
+		portion=os.path.splitext(oldfile)
+		print portion
+		if portion[1]==".sent":
+			print "\nyes\n"
+			newfile=os.path.join(filepath, portion[0])
+			print "oldfile:",oldfile,"  newfile:",newfile
+			os.rename(oldfile, newfile)
+		return redirect(url_for('file_resend'))
 	else:
-		return render_template('change_password.html', filename=filename)			
+		filenames = get_allfilename()
+		return render_template('resend.html', filenames=filenames)			
 
 
 
