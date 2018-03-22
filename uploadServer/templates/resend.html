@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>重新发送文件</title>
+	</head>
+	<body>
+		<h1>重新发送文件</h1>
+		<table>
+			<tr>
+				<th>文件名</th><th>操作</th>
+			</tr>
+			{% for file in filenames %}
+			<tr>
+				<td>{{ file }}</td>
+				<td>
+					<form action="/resend" method="post">
+						<input type="hidden" name="filename" value="{{ file }}" />
+						<input type="submit" value="重发" />
+					</form>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</body>
+<html>
